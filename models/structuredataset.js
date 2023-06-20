@@ -12,6 +12,7 @@ const StructureDataSetSchema = mongoose.Schema(
         NameLower: {type: String, index: true},
         Description: String,
         OwnerName: String, 
+        OwnerEmail: String, 
         // list of training set
         TrainSet: [{
             type: mongoose.SchemaTypes.ObjectId,
@@ -25,10 +26,10 @@ const StructureDataSetSchema = mongoose.Schema(
             type: mongoose.SchemaTypes.ObjectId,
             ref: "Structure"
         }],
-        StructureSelectionFilter: {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: "StructureFilter"
-        }
+        TrainFraction: Number,
+        ValidFraction: Number,
+        TestFraction: Number,
+        SearchFilter: Object,
     },
     {
         timestamps: true

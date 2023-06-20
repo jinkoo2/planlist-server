@@ -74,8 +74,8 @@ app.use(express.static(public_dir));
 
 app.use('/', indexRouter);
 app.use('/pts', ptsRouter);
-app.use('/api/structures', structuresRouter)
 app.use('/api/structuredatasets', structuresDateSetRouter)
+app.use('/api/structures', structuresRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

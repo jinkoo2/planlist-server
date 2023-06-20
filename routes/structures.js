@@ -38,15 +38,7 @@ router.get('/', function (req, res, next) {
         });
 });
 
-// get structures with filter
-router.post('/filtered', function (req, res, next) {
-
-    filter = req.body
-
-    console.log('----------- /filtered -------------')
-    console.log('filter=', filter);
-
-    // convert to where condision
+function filter2where(filter){
     var where = {}
     if (filter.Name !== "")
         if (filter.NameExactMatch)
@@ -91,6 +83,20 @@ router.post('/filtered', function (req, res, next) {
         const max = filter.BBoxDepthMax;
         where.BBoxDepth = { $gte: min, $lte: max }
     }
+
+    return where;
+}
+
+// get structures with filter
+router.post('/filtered', function (req, res, next) {
+
+    filter = req.body
+
+    console.log('----------- /filtered -------------')
+    console.log('filter=', filter);
+
+    // convert to where condision
+    var where = filter2where(filter)
 
     // pagenation
     const skip = filter.ItemsPerPage * filter.PageNumber
@@ -151,6 +157,38 @@ router.post('/filtered', function (req, res, next) {
 
 
 }); // post()
+
+
+// get structures with filter, returns only structure ids
+router.post('/filtered/ids', function (req, res, next) {
+
+    filter = req.body
+
+    console.log('----------- /filtered -------------')
+    console.log('filter=', filter);
+
+    // convert to where condision
+    var where = filter2where(filter)
+
+    console.log('find');
+    console.log('where', where)
+
+    Structure.find(where)
+    .select('_id')
+    // .skip(skip)
+    // .limit(limit)
+    .exec((err, data) => {
+        if (err) {
+            console.error(err);
+            res.json({ message: err });
+        }
+        else {
+            const ret = data;
+            res.json(ret);
+        }
+    })
+}); // post()
+
 
 /* GET ALL sset_list */
 router.get('/sset_list', function (req, res, next) {
