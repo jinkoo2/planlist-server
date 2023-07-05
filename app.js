@@ -10,7 +10,8 @@ var dotenv = require('dotenv/config');
 var indexRouter = require('./routes/index');
 var ptsRouter = require('./routes/pts');
 var structuresRouter = require('./routes/structures');
-var structuresDateSetRouter = require('./routes/structuredatasets');
+var structureDateSetsRouter = require('./routes/structuredatasets');
+var trainingJobsRouter = require('./routes/trainingjobs');
 
 var app = express();
 
@@ -74,8 +75,9 @@ app.use(express.static(public_dir));
 
 app.use('/', indexRouter);
 app.use('/pts', ptsRouter);
-app.use('/api/structuredatasets', structuresDateSetRouter)
+app.use('/api/structuredatasets', structureDateSetsRouter)
 app.use('/api/structures', structuresRouter)
+app.use('/api/trainingjobs', trainingJobsRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
