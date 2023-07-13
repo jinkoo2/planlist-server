@@ -16,11 +16,11 @@ router.get('/', function (req, res, next) {
         }
         else {
             TrainingJob.find(where)
-                // .populate({
-                //     path: 'pt',
-                //     //select: 'Id Sex', 
-                //     model: 'Patient'
-                // })
+                .populate({
+                     path: 'DataSet',
+                })
+                
+
                 // .populate({
                 //     path: 'plansetup',
                 //     //select: 'Id', 
@@ -81,6 +81,38 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+/* PUT A */
+router.put('/:id', function(req, res, next) {
+  
+    const id = req.params.id;
+    console.log(id);
+   
+    console.log('PUT request')
+
+    const trainingJob = new TrainingJob(req.body);
+
+    // TrainingJob.updateOne({_id: trainingJob._id}, trainingJob)
+
+    // console.log(trainingJob)
+
+    TrainingJob.updateOne({_id: trainingJob._id}, trainingJob)
+    //trainingJob.save()
+        .then(data => {
+            console.log('saved... sending the response back...');
+            console.log(data)
+            res.json(data);
+        })
+        .catch(err => {
+            console.log('error saving an object...', err);
+            res.json(
+                {
+                    message: err
+                });
+        });
+
+   
+});
+
 function filter2where(filter){
     var where = {}
     if (filter.Name !== "")
@@ -91,6 +123,8 @@ function filter2where(filter){
 
     return where;
 }
+
+
 
 // get datasets with filter
 router.post('/filtered', function (req, res, next) {

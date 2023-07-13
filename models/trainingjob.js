@@ -13,6 +13,7 @@ const TrainingJobSchema = mongoose.Schema(
         OwnerName: String, 
         OwnerEmail: String, 
         Model: String, 
+        Status: String,
         Parameters: mongoose.SchemaTypes.Object,
         // list of training set
         DataSet: {

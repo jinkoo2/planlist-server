@@ -45,7 +45,8 @@ app.use(cors()); // Enable CORS for all routes
 //const db_server = process.env.DB_SERVER;
 const db_server = "mongodb://172.200.0.2"
 const db_name = "planlist";
-const public_dir = "./public"
+//const public_dir =path.join(__dirname, "public")
+const public_dir = "/home/jk/g_drive/c_drive"
 
 console.log('DB_SERVER===>', db_server);
 console.log('DB_NAME===>', db_name);
@@ -70,7 +71,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 //app.use(express.static(path.join(__dirname, 'public')));
-console.log('public_dir=', public_dir)
+console.log('public_dir=',  public_dir)
 app.use(express.static(public_dir));
 
 app.use('/', indexRouter);

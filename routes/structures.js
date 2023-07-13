@@ -9,7 +9,7 @@ fs = require('fs')
 /* GET ALL structures */
 router.get('/', function (req, res, next) {
     console.log('get');
-    Structure.find({ NameLower: 'bladder' })
+    Structure.find({})
         .populate({
             path: 'pt',
             //select: 'Id Sex', 
@@ -37,6 +37,54 @@ router.get('/', function (req, res, next) {
             res.json({ message: err });
         });
 });
+
+
+function encode_path(str){
+    
+    
+    var encoded = str.replace(/\//g,'[slsh]')
+    .replace(/#/g,'[srp]')
+    .replace(/ /g,'[sp]')
+    .replace(/\./g,'[dot]')
+    .replace(/\\/g,'[bslsh]')
+    .replace(/-/g,'[mns]')
+    
+    console.log(`encode_path:${str}--->${encoded}`)    
+
+    return encoded
+}
+
+//findOne
+router.get('/:_id', function(req, res, next) {
+
+    // new start lower limit
+    const _id = req.params._id;
+
+    console.log('getting one structure of id:'+_id)
+    //console.log('get');
+    Structure.findById({_id})
+    .populate('sset')
+    .then(data=>{
+        // file path
+        const str_file_path = `${data.PatientId}/sset_list/${encode_path(data.StructureSetId)}/${encode_path(data.Name)}.mhd`
+        const img_file_path = `${data.PatientId}/img_list/${encode_path(data.sset.ImageId)}/img.mhd`
+
+        console.log(str_file_path)
+        console.log(img_file_path)
+        
+        data._doc.str_file_path = str_file_path
+        data._doc.img_file_path = img_file_path
+
+        //console.log(data);
+        res.json(data);
+        
+    })
+    .catch(err => {
+        console.log('err');
+        res.json({message: err});
+    });
+});
+
 
 function filter2where(filter){
     var where = {}
