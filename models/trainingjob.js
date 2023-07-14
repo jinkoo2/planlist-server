@@ -12,9 +12,10 @@ const TrainingJobSchema = mongoose.Schema(
         Description: String,
         OwnerName: String, 
         OwnerEmail: String, 
-        Model: String, 
         Status: String,
-        Parameters: mongoose.SchemaTypes.Object,
+        Type: String, 
+        Model: mongoose.SchemaTypes.Object,
+        Train: mongoose.SchemaTypes.Object,
         // list of training set
         DataSet: {
             type: mongoose.SchemaTypes.ObjectId,

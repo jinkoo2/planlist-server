@@ -54,6 +54,61 @@ router.get('/', function (req, res, next) {
     })
 });
 
+/* GET ALL */
+router.get('/not_completed', function (req, res, next) {
+    console.log('get all training jobs not completed');
+
+    where = {Status: {$ne: 'Completed'}}
+
+    console.log(where)
+
+    TrainingJob.countDocuments(where, (err, totalCount) => {
+        if (err) {
+            console.error(err);
+            res.json({ message: err });
+        }
+        else {
+            TrainingJob.find(where)
+                .populate({
+                     path: 'DataSet',
+                })
+                
+
+                // .populate({
+                //     path: 'plansetup',
+                //     //select: 'Id', 
+                //     model: 'PlanSetup'
+                // })
+                // .populate({
+                //     path: 'sset',
+                //     //select: 'Id', 
+                //     model: 'StructureSet'
+                // })
+                // .skip(skip)
+                // .limit(limit)
+                // .sort([[filter.SortBy, filter.SortIncrement ? 1 : -1]])
+                .exec((err, data) => {
+                    if (err) {
+                        console.error(err);
+                        res.json({ message: err });
+                    }
+                    else {
+                        const ret = {
+                            totalCount: totalCount,
+                            list: data
+                        }
+
+                        console.log(ret)
+    
+                        res.json(ret);
+                    }
+                })
+    
+        }
+    
+    })
+});
+
 
 /* GET A */
 router.get('/:id', function(req, res, next) {
